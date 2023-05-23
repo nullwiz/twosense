@@ -1,6 +1,6 @@
 setup: down build up build-local-db test simulate
 
-rundev: build build-local-db up-db
+rundev: down build build-local-db up-db
 
 test: 
 	. .venv/bin/activate && pytest -v 
@@ -15,11 +15,11 @@ env:
 	python3 -m venv .venv
 	. .venv/bin/activate && pip install -r requirements.txt
 build-local-db:
-	. .venv/bin/activate && python api/db/manage_postgres_tables.py --drop
-	. .venv/bin/activate && python api/db/redis_flushall.py
+	. .venv/bin/activate && PYTHONPATH=${PWD} python api/db/manage_postgres_tables.py --drop
+	. .venv/bin/activate && PYTHONPATH=${OWD} python api/db/redis_flushall.py
 
 up:
 	docker-compose up -d
 
-up-db:
+up-db: 
 	docker-compose up -d postgres redis redisinsight
