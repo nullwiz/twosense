@@ -1,6 +1,6 @@
 setup: down build up build-local-db test simulate
 
-rundev: down build build-local-db up-db
+rundev: down build up-db build-local-db 
 
 test: 
 	. .venv/bin/activate && pytest -v 
