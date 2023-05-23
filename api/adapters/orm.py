@@ -10,10 +10,6 @@ mapper_registry = registry()
 
 metadata = mapper_registry.metadata
 
-mapper_registry = registry()
-
-metadata = mapper_registry.metadata
-
 location = Table(
     "locations",
     metadata,
