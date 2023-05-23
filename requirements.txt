@@ -5,9 +5,11 @@ fastapi[all]
 asyncpg
 python-jose[cryptography]
 pytest
+pydantic
 passlib[bcrypt]
 psycopg2-binary
 pytz
 pandas
 requests
 timezonefinder
+gunicorn

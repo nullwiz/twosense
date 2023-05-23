@@ -2,13 +2,14 @@ import argparse
 from api.adapters.orm import create_tables, drop_tables
 from api.config import get_sync_postgres_uri
 from sqlalchemy import create_engine
+import time
 
 
 def main(drop):
-    # Get the connection string
+    # This is mostly for postgres
+    time.sleep(2)
     connection_string = get_sync_postgres_uri()
 
-    # Create the SQLAlchemy engine
     engine = create_engine(connection_string)
 
     if drop:
@@ -17,7 +18,6 @@ def main(drop):
     create_tables(engine)
     print("Tables created.")
 
-    # Close the engine
     engine.dispose()
 
 

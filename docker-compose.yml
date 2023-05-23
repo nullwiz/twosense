@@ -8,9 +8,10 @@ services:
     ports:
       - 5000:5000
     depends_on:
-      - db
+      - postgres 
       - redis
-  db:
+
+  postgres:
     image: postgres
     restart: always
     environment:
@@ -19,6 +20,7 @@ services:
       POSTGRES_DB: locations 
     ports:
       - 5432:5432
+
   redis:
     image: redis
     restart: always
@@ -34,4 +36,4 @@ services:
     image: 'redislabs/redisinsight:latest'
     ports:
       - '127.0.0.1:8001:8001'
-  
+    

@@ -3,6 +3,7 @@ from dataclasses import asdict
 from api.domain import events, models, commands
 from api.adapters import redis_eventpublisher
 from api.service_layer import unit_of_work
+from api.config import get_redis_host_and_port
 from datetime import datetime, timedelta
 from timezonefinder import TimezoneFinder
 import pytz
@@ -19,7 +20,9 @@ import json
 tf = TimezoneFinder()
 
 # Initialize a Redis client
-r = redis.Redis(host='localhost', port=6379, db=0)
+r = redis.Redis(host=get_redis_host_and_port()["host"],
+                port=get_redis_host_and_port()["port"],
+                db=0, decode_responses=True)
 
 
 def convert_to_utc(timestamp, lat, long):

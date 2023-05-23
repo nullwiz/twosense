@@ -1,24 +1,25 @@
-setup: buildlocal build up build-local-db test simulate
+setup: down build up build-local-db test simulate
 
-rundev: buildlocal build build-local-db up-db
+rundev: build build-local-db up-db
 
 test: 
-	pytest -v 
+	. .venv/bin/activate && pytest -v 
 
+down:
+	docker compose down 
 simulate:
 	API_HOST=http://localhost:5000 poetry run python simulation/simulate.py  
 build: 
 	docker-compose build 
-
-buildlocal:
-	pip install -r requirements.txt
-
+env:
+	python3 -m venv .venv
+	. .venv/bin/activate && pip install -r requirements.txt
 build-local-db:
-	python api/db/manage_postgres_tables.py --drop
-	python api/db/redis_flushall.py
+	. .venv/bin/activate && python api/db/manage_postgres_tables.py --drop
+	. .venv/bin/activate && python api/db/redis_flushall.py
 
 up:
 	docker-compose up -d
 
 up-db:
-	docker-compose up -d db redis redisinsight
+	docker-compose up -d postgres redis redisinsight

@@ -21,8 +21,8 @@ COPY . .
 EXPOSE 8000
 
 # Set environment variables for database and Redis connection
-ENV DATABASE_URL=postgresql+asyncpg://postgress:password@postgres/postgres
-ENV REDIS_URL=redis://redis:6379/0
+ENV DB_HOST=postgres
+ENV REDIS_HOST=redis
 
 # Run the FastAPI application with Uvicorn
 CMD ["uvicorn", "api.entrypoints.app:app", "--host", "0.0.0.0", "--port", "5000", "--workers", "4"]

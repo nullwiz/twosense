@@ -49,4 +49,4 @@ async def put_location(location: schemas.PutLocation):
         raise HTTPException(status_code=500, detail="Server error")
 
 if __name__ == '__main__':
-    uvicorn.run(app, host="0.0.0.0", port=5000)
+    uvicorn.run(app, host="0.0.0.0", port=5000, workers=4)
