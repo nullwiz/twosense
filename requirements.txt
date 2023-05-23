@@ -1,0 +1,13 @@
+wheel
+redis
+sqlalchemy[asyncio]
+fastapi[all]
+asyncpg
+python-jose[cryptography]
+pytest
+passlib[bcrypt]
+psycopg2-binary
+pytz
+pandas
+requests
+timezonefinder

@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "data-engineer-challenge"
+version = "1.0.0"
+description = "Technical challenge for the Twosense Data Engineer role"
+authors = [""]
+license = "Copyright (C) 2022 Twosense, Inc."
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Flask-RESTful = "^0.3.9"
+pandas = "^1.5.2"
+requests = "^2.28.1"
+
+[tool.poetry.dev-dependencies]
+pytruth = "^1.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
