@@ -5,9 +5,13 @@ to make it as abstract as possible, but it might have been overkill for the sake
 of this challenge, and could have used the time for tests instead.
 
 ## Setup
+Assumes poetry is already installed. 
+
 The makefile does everything.
-just do "make setup" to run everything (dependencies, build, tests, simulation). I made it so you dont have to activate
-the venv for doing it. 
+
+Do "*make env*" to install the venv and dependencies and "*make setup*"
+to run everything (build, docker, tests, simulation). 
+I made it so you dont have to activate the venv for doing it. 
 
 You can also do "make up-db" to clear the db and redis and start everything but the fastapi client,
 in that case, you do:
@@ -50,16 +54,18 @@ With more time i would have prioritized:
 
 
 # Benchmarks
+## mac m1 docker
+4 workers 1:16
 
-## docker + uvicorn
+## (wsl) docker + uvicorn
 1 worker  2:10
 4 workers  w/ docker: 2:15
 
-## local, dockerized db + uvicorn
+## (wsl) local, dockerized db + uvicorn
 1 worker : 1:35
 4 workers : 1:49
 
-## local, dockerized db + gunicorn
+## (wsl) local, dockerized db + gunicorn
 1 worker :  1:51
 4 workers : 1:51
 
