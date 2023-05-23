@@ -45,7 +45,9 @@ With more time i would have prioritized:
 - cleaning the data in a jupyter notebook and process it to have some idea what the outputs 
    should be like in the db to truly tell if the end result in the db is correct. 
 - proper package setup
-- lots of more tests, in order to achieve proper coverage and separated by e2e, unit, integrations.
+- lots of more tests, in order to achieve proper coverage and separated by e2e, unit, integration,
+   for example, tests that make sure the event is pushed to redis, that it shows up in the database,
+   domain, adapters 
 - cleaning up the handlers.py file 
 - logging 
 - 5 data points for user b1 are left over in redis, and one for a1: this is because redis is used as buffer,
