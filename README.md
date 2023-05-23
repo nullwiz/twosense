@@ -15,7 +15,7 @@ to run everything (build, docker, tests, simulation).
 I made it so you dont have to activate the venv for doing it. 
 
 You can also do "*make rundev*" to clear the db and redis and start everything but the fastapi client,
-in that case, you do:
+in that case:
 
 ```python
    source .venv/bin/activate
