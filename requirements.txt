@@ -9,7 +9,6 @@ pydantic
 passlib[bcrypt]
 psycopg2-binary
 pytz
-poetry
 pandas
 requests
 timezonefinder
