@@ -12,14 +12,14 @@ the venv for doing it.
 You can also do "make up-db" to clear the db and redis and start everything but the fastapi client,
 in that case, you do:
 
-```
+```python
    source .venv/bin/activate
    uvicorn api.entrypoints.app:app --reload --port 5000
 ```
 
 if you want to run with more workers, you can specify them with:
 
-```
+```python
    uvicorn api.entrypoints.app:app --port 5000--workers 4
 ```
 At that point, you can go head over to http://localhost:5000/docs .
