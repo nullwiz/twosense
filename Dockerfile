@@ -24,6 +24,8 @@ EXPOSE 8000
 ENV DB_HOST=postgres
 ENV REDIS_HOST=redis
 ENV MONGO_HOST=mongo
+# switch databases here
+ENV UOW=mongo
 
 # Run the FastAPI application with Uvicorn
 CMD ["uvicorn", "api.entrypoints.app:app", "--host", "0.0.0.0", "--port", "5000", "--workers", "4"]

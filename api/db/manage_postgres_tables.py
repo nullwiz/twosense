@@ -7,7 +7,7 @@ import time
 
 def main(drop):
     # This is mostly for postgres
-    time.sleep(2)
+    time.sleep(5)
     connection_string = get_sync_postgres_uri()
 
     engine = create_engine(connection_string)

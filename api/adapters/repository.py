@@ -12,9 +12,7 @@ from typing import Set, Optional, TypeVar
 # Type declarations for MongoDB
 CollectionType = AsyncIOMotorClient
 
-
 class AbstractRepository(abc.ABC):
-
     def __init__(self):
         self.seen: Set[models.Location] = set()
         self.events: Set[events.Event] = set()

@@ -13,4 +13,5 @@ pandas
 requests
 timezonefinder
 gunicorn
+pytest-cov
 motor
