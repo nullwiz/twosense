@@ -163,7 +163,8 @@ async def put_location(cmd: commands.PutLocation, uow: unit_of_work.AbstractUnit
                 )
                 await publish_location_added_event(location)
         else:
-            if await check_timestamp_is_newer(user_id, utc_time, uow):
+            new_timestamp = await check_timestamp_is_newer(user_id, utc_time, uow)
+            if new_timestamp:
                 add_entry_to_buffer(user_id, utc_time, cmd.lat,
                                     cmd.long, cmd.accuracy, cmd.speed)
 

@@ -6,22 +6,29 @@ from api.adapters.notifications import AbstractNotifications, EmailNotifications
 from api.domain import events
 from api.service_layer import handlers, messagebus, unit_of_work
 import logging
-
+import os
 logger = logging.getLogger(__name__)
 
 
 def bootstrap(
     start_orm: bool = True,
-    uow: unit_of_work.AbstractUnitOfWork = unit_of_work.SqlAlchemyUnitOfWork(),
+    uow: unit_of_work.AbstractUnitOfWork = None,
     notifications: AbstractNotifications = None,
     publish: Callable[[str, events.Event],
                       Awaitable] = redis_eventpublisher.publish,
 ) -> messagebus.MessageBus:
     if notifications is None:
         notifications = EmailNotifications()
-    if start_orm:
+    print(os.getenv("UOW"))
+    if os.getenv("UOW") == "sqlalchemy":
         logger.info("Starting ORM")
-        orm.start_mappers()
+        logger.info("Using UOW: %s", uow.__class__)
+        if start_orm:
+            orm.start_mappers()
+        uow = unit_of_work.SqlAlchemyUnitOfWork()
+    else:
+        logger.info("Using UOW: %s", uow.__class__)
+        uow = unit_of_work.MongoDBUnitOfWork()
 
     dependencies = {"uow": uow,
                     "notifications": notifications, "publish": publish}

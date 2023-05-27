@@ -1,5 +1,7 @@
 import os
+from motor.motor_asyncio import AsyncIOMotorClient
 
+MongoDBClient = AsyncIOMotorClient
 
 def get_postgres_uri():
     host = os.environ.get("DB_HOST", "localhost")
@@ -27,3 +29,30 @@ def get_redis_host_and_port():
 
 def get_repo_orm():
     return 'sqlalchemy'
+
+
+def get_mongo_db():
+    return 'locations'
+
+def get_mongo_collection():
+    return 'locations'
+
+# Default mongoclient is AsyncIOMotorClient
+def get_mongo_client():
+    host = os.environ.get("MONGO_HOST", "localhost")
+    port = 27017
+    return MongoDBClient(f"mongodb://{host}:{port}/")
+
+def get_mongo_connection_string():
+    host = os.environ.get("MONGO_HOST", "localhost")
+    port = 27017
+    return f"mongodb://{host}:{port}/"
+
+
+def mongo_config():
+    # Mongo config returns AsyncIO client and database
+    DEFAULT_CLIENT = get_mongo_client()
+    DEFAULT_DB = DEFAULT_CLIENT[get_mongo_db()]
+    return { "client": DEFAULT_CLIENT, "db": DEFAULT_DB, 
+            "collection": get_mongo_collection(), 
+            "connection_string": get_mongo_connection_string()} 
