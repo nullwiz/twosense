@@ -32,6 +32,12 @@ services:
       timeout: 5s
       retries: 5
 
+  mongo:
+    image: mongo
+    ports: 
+      - 27017:27017
+
+
   redisinsight:
     image: 'redislabs/redisinsight:latest'
     ports:

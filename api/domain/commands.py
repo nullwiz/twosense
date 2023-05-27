@@ -1,16 +1,15 @@
 from dataclasses import dataclass
-
-
+from datetime import datetime
 class Command:
     pass
 
 
 @dataclass
 class PutLocation(Command):
-    timestamp: str
+    timestamp: datetime 
     lat: float
     long: float
-    accuracy: float
+    accuracy: float     
     speed: float
     user_id: str
 

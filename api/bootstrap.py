@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 def bootstrap(
     start_orm: bool = True,
-    uow: unit_of_work.AbstractUnitOfWork = unit_of_work.SqlAlchemyUnitOfWork(),
+    uow: unit_of_work.AbstractUnitOfWork = unit_of_work.MongoDBUnitOfWork(),
     notifications: AbstractNotifications = None,
     publish: Callable[[str, events.Event],
                       Awaitable] = redis_eventpublisher.publish,
@@ -21,6 +21,7 @@ def bootstrap(
         notifications = EmailNotifications()
     if start_orm:
         logger.info("Starting ORM")
+        logger.info("Using UOW: %s", uow.__class__) 
         orm.start_mappers()
 
     dependencies = {"uow": uow,

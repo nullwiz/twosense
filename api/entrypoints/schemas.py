@@ -1,5 +1,4 @@
 from pydantic import BaseModel, Field
-from typing import Optional
 from datetime import datetime
 
 
@@ -8,9 +7,9 @@ class PutLocation(BaseModel):
         ..., description="Timestamp in the local timezone of the user's device.")
     lat: float = Field(..., description="Latitude of the location.")
     long: float = Field(..., description="Longitude of the location.")
-    accuracy: Optional[float] = Field(
+    accuracy: float = Field(
         None, description="Accuracy of the location data.")
-    speed: Optional[float] = Field(None, description="Speed of the user.")
+    speed: float = Field(None, description="Speed of the user.")
     user_id: str = Field(..., description="ID of the user.")
 
 

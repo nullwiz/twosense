@@ -4,6 +4,11 @@ import api.config as config
 from api.adapters import repository
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.ext.asyncio import async_sessionmaker
+from motor.motor_asyncio import AsyncIOMotorClient
+from motor.motor_asyncio import AsyncIOMotorCollection
+from motor.motor_asyncio import AsyncIOMotorDatabase
+
+MongoDBClient = AsyncIOMotorClient
 
 
 class AbstractUnitOfWork(abc.ABC):
@@ -31,6 +36,10 @@ class AbstractUnitOfWork(abc.ABC):
     async def _rollback(self):
         raise NotImplementedError
 
+    @abc.abstractmethod
+    async def __repr__(self):
+        raise NotImplementedError
+
 
 def create_engine():
     return create_async_engine(
@@ -46,6 +55,8 @@ DEFAULT_SESSION_FACTORY = async_sessionmaker(
     class_=AsyncSession,
     future=True,
 )
+
+MONGO_CONFIG = config.mongo_config()
 
 
 class SqlAlchemyUnitOfWork(AbstractUnitOfWork):
@@ -66,3 +77,76 @@ class SqlAlchemyUnitOfWork(AbstractUnitOfWork):
 
     async def _rollback(self):
         await self.session.rollback()
+
+    async def __repr__(self):
+        return f"<SqlAlchemyUnitOfWork(session={self.session})>"
+
+
+# class MongoDBUnitOfWork(AbstractUnitOfWork):
+# def __init__(self, db: MongoDBClient = MONGO_CONFIG["client"]):
+# self.db = db
+##
+# async def __aenter__(self):
+# self.session = await self.db.start_session()
+# self.session.start_transaction()
+# self.locations = repository.MongoDBRepository(self.db,
+# MONGO_CONFIG["collection"],
+# MONGO_CONFIG["collection"],
+# self.session)
+# return await super().__aenter__()
+##
+# async def __aexit__(self, *args):
+# await super().__aexit__(*args)
+# await self.session.end_session()
+##
+# async def _commit(self):
+# await self.session.commit_transaction()
+##
+# async def _rollback(self):
+# await self.session.abort_transaction()
+##
+# async def __repr__(self):
+# return f"<MongoDBUnitOfWork(db={self.db})>"
+##
+
+class MongoDBUnitOfWork(AbstractUnitOfWork):
+    def __init__(self, client: MongoDBClient = MONGO_CONFIG["client"],
+                 db_name: str = "locations", collection_name: str = "locations"):
+        self.client = client
+        self.db_name = db_name
+        self.collection_name = collection_name
+        self.session = None
+        self.transaction_started = False
+
+    async def __aenter__(self):
+        self.session = await self.client.start_session()
+        self.session.start_transaction()
+        self.transaction_started = True
+        self.locations = repository.MongoDBRepository(self.client, self.db_name,
+                                                      self.collection_name, self.session)
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        if exc_type is not None:  # An error occurred
+            if self.transaction_started:
+                await self.session.abort_transaction()
+                self.transaction_started = False
+        else:
+            if self.transaction_started:
+                await self.session.commit_transaction()
+                self.transaction_started = False
+
+        await self.session.end_session()
+
+    async def _commit(self):
+        if self.transaction_started:
+            await self.session.commit_transaction()
+            self.transaction_started = False
+
+    async def _rollback(self):
+        if self.transaction_started:
+            await self.session.abort_transaction()
+            self.transaction_started = False
+
+    async def __repr__(self):
+        return f"<MongoDBUnitOfWork(db={self.db})>"

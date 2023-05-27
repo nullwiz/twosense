@@ -23,7 +23,8 @@ class Location():
     _events: List[events.Event] = field(default_factory=list)
 
     def __post_init__(self):
-        object.__setattr__(self, "id", str(uuid.uuid4()))
+        if not self.id:
+            object.__setattr__(self, "id", str(uuid.uuid4()))
 
     def __eq__(self, other):
         if not isinstance(other, Location):
