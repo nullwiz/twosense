@@ -15,4 +15,3 @@ timezonefinder
 gunicorn
 pytest-cov
 motor
-python-jose[cryptography]

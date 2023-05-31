@@ -19,16 +19,16 @@ def bootstrap(
 ) -> messagebus.MessageBus:
     if notifications is None:
         notifications = EmailNotifications()
-    
-    if os.getenv("UOW") == "mongo":
-        logger.info("Using UOW: %s", uow.__class__)
-        uow = unit_of_work.MongoDBUnitOfWork()
-    else:
+    print(os.getenv("UOW"))
+    if os.getenv("UOW") == "sqlalchemy":
         logger.info("Starting ORM")
         logger.info("Using UOW: %s", uow.__class__)
-        if start_orm and orm.has_started_mappers() is False:
+        if start_orm:
             orm.start_mappers()
         uow = unit_of_work.SqlAlchemyUnitOfWork()
+    else:
+        logger.info("Using UOW: %s", uow.__class__)
+        uow = unit_of_work.MongoDBUnitOfWork()
 
     dependencies = {"uow": uow,
                     "notifications": notifications, "publish": publish}
@@ -57,5 +57,3 @@ def inject_dependencies(handler, dependencies):
         name: dependency for name, dependency in dependencies.items() if name in params
     }
     return lambda message: handler(message, **deps)
-
-bus = bootstrap()

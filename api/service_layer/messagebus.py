@@ -1,7 +1,8 @@
+from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING, List, Optional, Union, Type, Dict, Callable
+
 from api.domain import commands, events
-from api.service_layer import unit_of_work
 
 if TYPE_CHECKING:
     from . import unit_of_work
