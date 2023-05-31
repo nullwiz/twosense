@@ -7,10 +7,19 @@ class Event:
 
 
 @dataclass
-class LocationAdded(Event):
-    timestamp: date
-    lat: float
-    long: float
-    accuracy: float
-    speed: float
+class UserCreated(Event):
     user_id: str
+    name : str
+    last_name : str
+    dni : str
+    email : str
+    password : str
+
+@dataclass
+class PollAdded(Event):
+    pass
+
+@dataclass
+class VoteReceived(Event):
+    pass 
+
